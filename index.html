@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brew Perfect</title>
+  <style>
+    /* Dark Theme */
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      transition: all 0.5s ease;
+    }
+    h1 {
+      color: #f39c12;
+      animation: fadeIn 2s ease-in-out;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #34495e;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      transition: all 0.5s ease;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #f39c12;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background-color: #e67e22;
+      transform: scale(1.1);
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #2ecc71;
+      animation: slideIn 1s ease-in-out;
+    }
+    .error {
+      color: #e74c3c;
+      animation: shake 0.5s ease-in-out;
+    }
+    img {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      50% { transform: translateX(10px); }
+      75% { transform: translateX(-10px); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Brew Perfect</h1>
+  <p>Can you brew the perfect cup of coffee?</p>
+
+  <div id="game">
+    <button onclick="choose('beans', 'light')">Light Roast Beans</button>
+    <button onclick="choose('beans', 'medium')">Medium Roast Beans</button>
+    <button onclick="choose('beans', 'dark')">Dark Roast Beans</button>
+  </div>
+
+  <div id="water" style="display: none;">
+    <p>Choose water temperature:</p>
+    <button onclick="choose('water', 'cold')">Cold</button>
+    <button onclick="choose('water', 'warm')">Warm</button>
+    <button onclick="choose('water', 'hot')">Hot</button>
+  </div>
+
+  <div id="time" style="display: none;">
+    <p>Choose brewing time:</p>
+    <button onclick="choose('time', 'short')">Short</button>
+    <button onclick="choose('time', 'medium')">Medium</button>
+    <button onclick="choose('time', 'long')">Long</button>
+  </div>
+
+  <div id="result" class="result" style="display: none;"></div>
+  <div id="coffeeImage" style="display: none;"></div>
+</div>
+
+<script>
+  let choices = {};
+
+  function choose(category, option) {
+    choices[category] = option;
+
+    // Show next step based on current choice
+    if (category === 'beans') {
+      document.getElementById('game').style.display = 'none';
+      document.getElementById('water').style.display = 'block';
+    } else if (category === 'water') {
+      document.getElementById('water').style.display = 'none';
+      document.getElementById('time').style.display = 'block';
+    } else if (category === 'time') {
+      document.getElementById('time').style.display = 'none';
+
+      // Evaluate result
+      const resultDiv = document.getElementById('result');
+      resultDiv.style.display = 'block';
+
+      if (
+        choices.beans === 'medium' &&
+        choices.water === 'hot' &&
+        choices.time === 'medium'
+      ) {
+        resultDiv.textContent = "Perfect! You brewed the perfect cup of coffee!";
+        resultDiv.classList.add('result');
+
+        // Show random coffee image for success
+        showRandomCoffeeImage();
+      } else {
+        resultDiv.textContent = "Oops! Your coffee didn't turn out quite right.";
+        resultDiv.classList.add('error');
+      }
+    }
+  }
+
+  // Function to show a random coffee image
+  function showRandomCoffeeImage() {
+    const coffeeImages = [
+    'https://plus.unsplash.com/premium_photo-1674327105074-46dd8319164b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+    ];
+
+    const randomIndex = Math.floor(Math.random() * coffeeImages.length);
+    const coffeeImageDiv = document.getElementById('coffeeImage');
+    coffeeImageDiv.innerHTML = `<img src="${coffeeImages[randomIndex]}" alt="Coffee Image">`;
+    coffeeImageDiv.style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
